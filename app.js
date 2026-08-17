@@ -10,6 +10,7 @@
       dl: "Скачать", empty: "Ничего не найдено",
       mSize: "Вес мира: ", mDate: "Дата создания: ", mSeed: "Сид: ", mGt: "Режим игры: ",
       vMin: "Минимальная совместимая версия игры: ", vLast: "Последний раз открывалась в игре версии: ", vUndef: "неопределённая",
+      mComment: "Комментарий: ",
       gt: { 0: "Выживание", 1: "Креатив", 2: "Приключения", 3: "Зритель" },
       footData: "Данные:", footDb: "обновление БД:", footGen: "generated:",
       about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
@@ -21,6 +22,7 @@
       dl: "Завантажити", empty: "Нічого не знайдено",
       mSize: "Вага світу: ", mDate: "Дата створення: ", mSeed: "Сід: ", mGt: "Режим гри: ",
       vMin: "Мінімальна сумісна версія гри: ", vLast: "Востаннє відкривалась у версії гри: ", vUndef: "невизначена",
+      mComment: "Коментар: ",
       gt: { 0: "Виживання", 1: "Креатив", 2: "Пригоди", 3: "Спостерігач" },
       footData: "Дані:", footDb: "оновлення БД:", footGen: "створено:",
       about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
@@ -32,6 +34,7 @@
       dl: "Download", empty: "Nothing found",
       mSize: "World size: ", mDate: "Created: ", mSeed: "Seed: ", mGt: "Game mode: ",
       vMin: "Minimum compatible game version: ", vLast: "Last opened in game version: ", vUndef: "undefined",
+      mComment: "Comment: ",
       gt: { 0: "Survival", 1: "Creative", 2: "Adventure", 3: "Spectator" },
       footData: "Data:", footDb: "DB update:", footGen: "generated:",
       about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
@@ -43,6 +46,7 @@
       dl: "下载", empty: "未找到",
       mSize: "世界大小: ", mDate: "创建日期: ", mSeed: "种子: ", mGt: "游戏模式: ",
       vMin: "最低兼容游戏版本: ", vLast: "上次打开的游戏版本: ", vUndef: "未定义",
+      mComment: "评论: ",
       gt: { 0: "生存", 1: "创造", 2: "冒险", 3: "旁观" },
       footData: "数据:", footDb: "数据库更新:", footGen: "生成于:",
       about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
@@ -54,6 +58,7 @@
       dl: "Baixar", empty: "Nada encontrado",
       mSize: "Tamanho do mundo: ", mDate: "Data de criação: ", mSeed: "Semente: ", mGt: "Modo de jogo: ",
       vMin: "Versão mínima compatível do jogo: ", vLast: "Última abertura na versão do jogo: ", vUndef: "indefinida",
+      mComment: "Comentário: ",
       gt: { 0: "Sobrevivência", 1: "Criativo", 2: "Aventura", 3: "Espectador" },
       footData: "Dados:", footDb: "Atualização do BD:", footGen: "gerado em:",
       about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
@@ -226,6 +231,13 @@
         (w.lov ? " | " + T.vLast + w.lov : "")
       ));
       div.appendChild(ver);
+
+      if (w.c) {
+        var cm = document.createElement("div");
+        cm.className = "comment";
+        cm.appendChild(document.createTextNode(T.mComment + w.c));
+        div.appendChild(cm);
+      }
 
       g = document.createElement("div");
       for (var j = 0; j < w.g.length; j++) {
