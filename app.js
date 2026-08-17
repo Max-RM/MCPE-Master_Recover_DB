@@ -2,25 +2,109 @@
 (function () {
   "use strict";
 
+  var TRANS = {
+    ru: {
+      search: "Поиск по имени...",
+      sortName: "Имя", sortSize: "Размер", sortDate: "Дата", sortVer: "Версия", sortSeed: "Сид", sortGt: "Режим игры",
+      dirAsc: "По возрастанию", dirDesc: "По убыванию",
+      dl: "Скачать", empty: "Ничего не найдено",
+      mSize: "Вес мира: ", mDate: "Дата создания: ", mSeed: "Сид: ", mGt: "Режим игры: ",
+      vMin: "Минимальная совместимая версия игры: ", vLast: "Последний раз открывалась в игре версии: ", vUndef: "неопределённая",
+      gt: { 0: "Выживание", 1: "Креатив", 2: "Приключения", 3: "Зритель" },
+      footData: "Данные:", footDb: "обновление БД:", footGen: "generated:",
+      about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
+    },
+    uk: {
+      search: "Пошук за назвою...",
+      sortName: "Ім'я", sortSize: "Розмір", sortDate: "Дата", sortVer: "Версія", sortSeed: "Сід", sortGt: "Режим гри",
+      dirAsc: "За зростанням", dirDesc: "За спаданням",
+      dl: "Завантажити", empty: "Нічого не знайдено",
+      mSize: "Вага світу: ", mDate: "Дата створення: ", mSeed: "Сід: ", mGt: "Режим гри: ",
+      vMin: "Мінімальна сумісна версія гри: ", vLast: "Востаннє відкривалась у версії гри: ", vUndef: "невизначена",
+      gt: { 0: "Виживання", 1: "Креатив", 2: "Пригоди", 3: "Спостерігач" },
+      footData: "Дані:", footDb: "оновлення БД:", footGen: "створено:",
+      about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
+    },
+    en: {
+      search: "Search by name...",
+      sortName: "Name", sortSize: "Size", sortDate: "Date", sortVer: "Version", sortSeed: "Seed", sortGt: "Game mode",
+      dirAsc: "Ascending", dirDesc: "Descending",
+      dl: "Download", empty: "Nothing found",
+      mSize: "World size: ", mDate: "Created: ", mSeed: "Seed: ", mGt: "Game mode: ",
+      vMin: "Minimum compatible game version: ", vLast: "Last opened in game version: ", vUndef: "undefined",
+      gt: { 0: "Survival", 1: "Creative", 2: "Adventure", 3: "Spectator" },
+      footData: "Data:", footDb: "DB update:", footGen: "generated:",
+      about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
+    },
+    zh: {
+      search: "按名称搜索...",
+      sortName: "名称", sortSize: "大小", sortDate: "日期", sortVer: "版本", sortSeed: "种子", sortGt: "游戏模式",
+      dirAsc: "升序", dirDesc: "降序",
+      dl: "下载", empty: "未找到",
+      mSize: "世界大小: ", mDate: "创建日期: ", mSeed: "种子: ", mGt: "游戏模式: ",
+      vMin: "最低兼容游戏版本: ", vLast: "上次打开的游戏版本: ", vUndef: "未定义",
+      gt: { 0: "生存", 1: "创造", 2: "冒险", 3: "旁观" },
+      footData: "数据:", footDb: "数据库更新:", footGen: "生成于:",
+      about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
+    },
+    pt: {
+      search: "Pesquisar por nome...",
+      sortName: "Nome", sortSize: "Tamanho", sortDate: "Data", sortVer: "Versão", sortSeed: "Semente", sortGt: "Modo de jogo",
+      dirAsc: "Crescente", dirDesc: "Decrescente",
+      dl: "Baixar", empty: "Nada encontrado",
+      mSize: "Tamanho do mundo: ", mDate: "Data de criação: ", mSeed: "Semente: ", mGt: "Modo de jogo: ",
+      vMin: "Versão mínima compatível do jogo: ", vLast: "Última abertura na versão do jogo: ", vUndef: "indefinida",
+      gt: { 0: "Sobrevivência", 1: "Criativo", 2: "Aventura", 3: "Espectador" },
+      footData: "Dados:", footDb: "Atualização do BD:", footGen: "gerado em:",
+      about: "The database of content from the well-known program \"MCPE Master\" saved by MrY122 and sorted by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using \"DeepSeek V4 Flash free\" and \"OpenCode\"."
+    }
+  };
+
+  var LANGS = [
+    { code: "ru", label: "Русский" },
+    { code: "uk", label: "Українська" },
+    { code: "en", label: "English" },
+    { code: "zh", label: "中文" },
+    { code: "pt", label: "Português" }
+  ];
+
   var WORLDS_ALL = WORLDS.worlds;
 
   var state = {
     q: "",
     sort: "name",
     dir: 1,
-    tags: []
+    tags: [],
+    lang: "ru"
   };
+  var T = TRANS.ru;
 
   function el(id) { return document.getElementById(id); }
+
+  function saveLang() {
+    try { localStorage.setItem("mcpe_lang", state.lang); } catch (e) {}
+  }
+
+  function detectLang() {
+    try {
+      var s = localStorage.getItem("mcpe_lang");
+      if (s && TRANS[s]) return s;
+    } catch (e) {}
+    var nav = (navigator.language || navigator.userLanguage || "ru").toLowerCase();
+    var c = nav.substring(0, 2);
+    if (TRANS[c]) return c;
+    var full = nav.replace("-", "_");
+    if (TRANS[full]) return full;
+    return "ru";
+  }
 
   function stripSection(s) {
     return String(s || "").replace(/\u00a7./g, "");
   }
 
   function gameTypeName(gt) {
-    var map = { 0: "Выживание", 1: "Креатив", 2: "Приключения", 3: "Зритель" };
     if (gt === null || gt === undefined) return "?";
-    return map[gt] ? map[gt] : "Тип " + gt;
+    return T.gt[gt] ? T.gt[gt] : "? " + gt;
   }
 
   function verParts(v) {
@@ -117,7 +201,7 @@
       a = document.createElement("a");
       a.className = "dl";
       a.href = WORLDS.base + w.u;
-      a.appendChild(document.createTextNode("Скачать"));
+      a.appendChild(document.createTextNode(T.dl));
       div.appendChild(a);
 
       var h = document.createElement("div");
@@ -127,10 +211,10 @@
 
       meta = document.createElement("div");
       meta.className = "meta";
-      parts = ["Вес мира: " + (w.sizeHuman || "?")];
-      if (w.d) parts.push("Дата создания: " + w.d);
-      if (w.seed !== null && w.seed !== undefined) parts.push("Сид: " + w.seed);
-      parts.push("Режим игры: " + gameTypeName(w.gt));
+      parts = [T.mSize + (w.sizeHuman || "?")];
+      if (w.d) parts.push(T.mDate + w.d);
+      if (w.seed !== null && w.seed !== undefined) parts.push(T.mSeed + w.seed);
+      parts.push(T.mGt + gameTypeName(w.gt));
       meta.appendChild(document.createTextNode(parts.join(" | ")));
       div.appendChild(meta);
 
@@ -138,8 +222,8 @@
       ver.className = "meta";
       var mcv = w.mcv || w.lov;
       ver.appendChild(document.createTextNode(
-        "Минимальная совместимая версия игры: " + (mcv || "неопределённая") +
-        (w.lov ? " | Последний раз открывалась в игре версии: " + w.lov : "")
+        T.vMin + (mcv || T.vUndef) +
+        (w.lov ? " | " + T.vLast + w.lov : "")
       ));
       div.appendChild(ver);
 
@@ -157,7 +241,7 @@
     if (!out.length) {
       var e = document.createElement("div");
       e.className = "empty";
-      e.appendChild(document.createTextNode("Ничего не найдено"));
+      e.appendChild(document.createTextNode(T.empty));
       list.appendChild(e);
     }
     el("count").textContent = out.length;
@@ -193,21 +277,69 @@
     }
   }
 
+  function buildSortSelect() {
+    var sel = el("sort"), items = [
+      ["name", T.sortName], ["size", T.sortSize], ["date", T.sortDate],
+      ["ver", T.sortVer], ["seed", T.sortSeed], ["gt", T.sortGt]
+    ], i, o;
+    sel.innerHTML = "";
+    for (i = 0; i < items.length; i++) {
+      o = document.createElement("option");
+      o.value = items[i][0];
+      o.appendChild(document.createTextNode(items[i][1]));
+      sel.appendChild(o);
+    }
+    sel.value = state.sort;
+  }
+
+  function buildLangSelect() {
+    var sel = el("lang"), i, o;
+    sel.innerHTML = "";
+    for (i = 0; i < LANGS.length; i++) {
+      o = document.createElement("option");
+      o.value = LANGS[i].code;
+      o.appendChild(document.createTextNode(LANGS[i].label));
+      sel.appendChild(o);
+    }
+    sel.value = state.lang;
+  }
+
+  function applyLang() {
+    T = TRANS[state.lang];
+    el("search").placeholder = T.search;
+    el("dirBtn").textContent = state.dir === 1 ? T.dirAsc : T.dirDesc;
+    el("aboutBox").textContent = T.about;
+    el("aboutBtn").title = "About";
+    el("footData").textContent = T.footData;
+    el("footDb").textContent = T.footDb;
+    el("footGen").textContent = T.footGen;
+    buildSortSelect();
+  }
+
   el("search").onkeyup = function () { state.q = this.value; render(); };
   el("sort").onchange = function () { state.sort = this.value; render(); };
   el("dirBtn").onclick = function () {
     state.dir = state.dir === 1 ? -1 : 1;
-    this.textContent = state.dir === 1 ? "По возрастанию" : "По убыванию";
+    this.textContent = state.dir === 1 ? T.dirAsc : T.dirDesc;
     render();
   };
   el("aboutBtn").onclick = function () {
     var box = el("aboutBox");
     box.style.display = box.style.display === "none" ? "block" : "none";
   };
+  el("lang").onchange = function () {
+    state.lang = this.value;
+    saveLang();
+    applyLang();
+    render();
+  };
 
+  state.lang = detectLang();
   el("total").textContent = WORLDS_ALL.length;
   el("dbver").textContent = WORLDS.dbVersion;
   el("gen").textContent = WORLDS.generated;
+  buildLangSelect();
+  applyLang();
   buildTags();
   render();
 })();

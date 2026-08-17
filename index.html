@@ -8,32 +8,23 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>MCPE Master Recover DB <span class="ver">(test)</span>
+  <h1>MCPE Master Recover DB <span class="ver" id="verTag">(test)</span>
     <button type="button" class="about" id="aboutBtn" title="About">i</button>
   </h1>
-  <div class="aboutbox" id="aboutBox" style="display:none">
-    The database of content from the well-known program "MCPE Master" saved by MrY122 and sorted
-    by MaxRM, TNT ENTERTAINMENT inc organization in 2026 using "DeepSeek V4 Flash free" and "OpenCode".
-  </div>
+  <div class="aboutbox" id="aboutBox" style="display:none"></div>
 
   <div class="controls">
-    <input type="text" id="search" placeholder="Поиск по имени...">
-    <select id="sort">
-      <option value="name">Имя</option>
-      <option value="size">Размер</option>
-      <option value="date">Дата</option>
-      <option value="ver">Версия</option>
-      <option value="seed">Сид</option>
-      <option value="gt">Режим игры</option>
-    </select>
-    <button type="button" class="dir" id="dirBtn">По возрастанию</button>
+    <input type="text" id="search">
+    <select id="sort"></select>
+    <button type="button" class="dir" id="dirBtn"></button>
+    <select id="lang"></select>
     <div id="tags" class="tags"></div>
   </div>
 
   <div class="info"><span id="count">0</span> / <span id="total">0</span></div>
   <div id="list"></div>
 
-  <p class="foot">Данные: <a href="data/data.js">data.js</a> &middot; обновление БД: <span id="dbver"></span> &middot; generated: <span id="gen"></span></p>
+  <p class="foot"><span id="footData"></span> <a href="data/data.js">data.js</a> &middot; <span id="footDb"></span> <span id="dbver"></span> &middot; <span id="footGen"></span> <span id="gen"></span></p>
 </div>
 <script src="data/data.js"></script>
 <script src="app.js"></script>

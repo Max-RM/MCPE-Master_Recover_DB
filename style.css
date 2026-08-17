@@ -35,27 +35,24 @@ h1 { font-size: 20px; margin: 10px 0 12px; color: #eef2f8; }
 }
 
 .controls { margin-bottom: 10px; }
-.controls input[type="text"] {
-  width: 60%;
-  padding: 6px 8px;
+.controls input[type="text"],
+.controls select,
+.controls .dir {
+  height: 32px;
+  padding: 4px 8px;
   border: 1px solid #33404f;
   background: #18202a;
   color: #d8dee8;
   font-size: 14px;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
 }
-.controls select {
-  padding: 6px 8px;
-  border: 1px solid #33404f;
-  background: #18202a;
-  color: #d8dee8;
+.controls input[type="text"] {
+  width: 45%;
   font-size: 14px;
 }
 .controls .dir {
-  padding: 6px 10px;
-  border: 1px solid #33404f;
-  background: #18202a;
-  color: #d8dee8;
   font-size: 13px;
   cursor: pointer;
 }
